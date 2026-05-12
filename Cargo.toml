@@ -1,0 +1,30 @@
+[package]
+name = "docker-checker"
+version = "0.1.0"
+edition = "2021"
+authors = ["mkb79 <mkb79@hackitall.de>"]
+description = "Checks running Docker containers for image updates"
+license = "MIT"
+repository = "https://github.com/mkb79/docker-checker"
+homepage = "https://github.com/mkb79/docker-checker"
+
+[[bin]]
+name = "docker-checker"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+bollard = "0.18"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json", "gzip", "deflate"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+clap = { version = "4", features = ["derive"] }
+colored = "2"
+futures = "0.3"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

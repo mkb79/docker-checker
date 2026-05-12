@@ -285,18 +285,21 @@ impl DockerClient {
 }
 
 fn check_socket_access() -> bool {
-    let socket = std::env::var("DOCKER_HOST")
-        .ok()
-        .and_then(|h| h.strip_prefix("unix://").map(str::to_string))
-        .unwrap_or_else(|| "/var/run/docker.sock".to_string());
+    #[cfg(unix)]
+    {
+        let socket = std::env::var("DOCKER_HOST")
+            .ok()
+            .and_then(|h| h.strip_prefix("unix://").map(str::to_string))
+            .unwrap_or_else(|| "/var/run/docker.sock".to_string());
 
-    if Path::new(&socket).exists() {
-        if std::os::unix::net::UnixStream::connect(&socket).is_err() {
-            eprintln!(
-                "{} insufficient permissions to access Docker socket at {socket}",
-                "error:".red().bold()
-            );
-            return false;
+        if Path::new(&socket).exists() {
+            if std::os::unix::net::UnixStream::connect(&socket).is_err() {
+                eprintln!(
+                    "{} insufficient permissions to access Docker socket at {socket}",
+                    "error:".red().bold()
+                );
+                return false;
+            }
         }
     }
     true

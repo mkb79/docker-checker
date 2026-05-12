@@ -32,11 +32,6 @@ jobs:
             binary: docker-checker.exe
             archive: docker-checker-x86_64-windows.zip
 
-          - target: x86_64-apple-darwin
-            runner: macos-13
-            binary: docker-checker
-            archive: docker-checker-x86_64-macos.tar.gz
-
           - target: aarch64-apple-darwin
             runner: macos-latest
             binary: docker-checker
